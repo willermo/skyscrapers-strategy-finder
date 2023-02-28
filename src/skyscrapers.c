@@ -6,7 +6,7 @@
 /*   By: doriani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 13:40:34 by doriani           #+#    #+#             */
-/*   Updated: 2023/02/28 19:55:29 by doriani          ###   ########.fr       */
+/*   Updated: 2023/02/28 21:30:10 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,20 +27,19 @@ int	print_usage_and_exit(void)
 
 int	main(int argc, char **argv)
 {
-	int	**perms;
+	int	**permutations;
 	int	*rows;
 	int	**matrix;
 	int	*rules;
 	int dim;
 
-	//dim = 4; //hardcode still needed
 	if (argc != 2 || !(dim = validate(argv[1]) / 4))
         return (print_usage_and_exit());
 	rules = get_rules(dim, argv[1]);
-	init_puzzle(dim, &perms, &rows, &matrix);
-	(matrix = find_solution(dim, matrix, perms, rows, rules))
+	init_puzzle(dim, &permutations, &rows, &matrix);
+	(matrix = find_solution(dim, matrix, permutations, rows, rules))
 		? print_matrix(matrix, dim)
 		: putstr("No solutions found\n");
-	quit_puzzle(dim, rules, perms, rows, matrix);
+	quit_puzzle(dim, rules, permutations, rows, matrix);
 	return (0);
 }

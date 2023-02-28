@@ -6,10 +6,12 @@
 /*   By: doriani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 13:40:34 by doriani           #+#    #+#             */
-/*   Updated: 2023/02/28 19:53:40 by doriani          ###   ########.fr       */
+/*   Updated: 2023/02/28 21:29:42 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include <stdlib.h>
+#include <time.h>
+#include <stdio.h>
 
 int	**get_permutations(void);
 int	get_next_matrix(int dim, int **matrix, int **permutations, int *rows);
@@ -37,12 +39,21 @@ void	print_matrix(int **matrix, int dim);
 
 int	**find_solution(int dim, int **matrix, int **permutations, int *rows, int *rules)
 {
+	time_t	start;
+	time_t	end;
+
+	start = time(NULL);
 	while(get_next_matrix(dim, matrix, permutations, rows)) 
 	{
-		print_matrix(matrix, dim);
 		if (is_correct(dim, matrix, rules))
+		{
+			end = time(NULL);
+			printf("Solution found in %d seconds.\n", (int) (end - start));
 			return (matrix);
+		}
 	}
+	end = time(NULL);
+	printf("Time elapsed: %d seconds.\n", (int) (end - start));
 	free(matrix);
 	return (0);
 }
