@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_rules.c                                        :+:      :+:    :+:   */
+/*   rules.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: doriani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 16:58:39 by doriani           #+#    #+#             */
-/*   Updated: 2023/02/28 04:33:03 by doriani          ###   ########.fr       */
+/*   Updated: 2023/02/28 19:45:50 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,37 +19,48 @@ char	*skip_blanks(char *str)
 	return (str);
 }
 
-int	is_single_and_valid_digit(char *str)
+char	*skip_token(char *str)
 {
-	if (*str >= '1' && *str <= '4')
-		if (*(str + 1) && *(str + 1) != ' ')
-			return (0);
-	return (1);
+	while (*str && !(*str == ' ' || *str == '\t'))
+		str++;
+	return (str);
 }
 
-int	*get_rules(char *str)
+int validate(char *str)
 {
-	int	*nums;
-	int	*start;
+	int count;
 
-	nums = (int *) malloc(16 * sizeof(int));
-	start = nums;
-	str = skip_blanks(str);
-	while (*str)
+	count = 0;
+	while (*(str = skip_blanks(str)))
 	{
-		if (is_single_and_valid_digit(str))
-			*nums++ = *str++ - '0';
-		else
+		if (*str == '0')
 		{
-			free(start);
-			return (0);
+			while (*str == '0')
+		   		str++;
+			if (*str < '1' || *str > '9')
+				return (0);
 		}
-		str = skip_blanks(str);
+		while (*str >= '0' && *str <= '9')
+			str ++;
+		if (*str && !(*str == ' ' || *str == '\t'))
+			return (0);
+		count++;
 	}
-	if (nums - start != 16)
+	return (count % 4) ? 0 : count;
+}
+
+int	*get_rules(int dim, char *str)
+{
+	int		*rules;
+	int		*runner;
+
+	rules = (int *) malloc(dim * 4 * sizeof(int));
+	runner = rules;
+	str = skip_blanks(str);
+	while (*(str = skip_blanks(str)))
 	{
-		free(start);
-		return (0);
+		*runner++ = atoi(str);
+		str = skip_token(str);
 	}
-	return (start);
+	return (rules);
 }

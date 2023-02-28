@@ -6,7 +6,7 @@
 /*   By: doriani <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 13:40:34 by doriani           #+#    #+#             */
-/*   Updated: 2023/02/28 06:11:41 by doriani          ###   ########.fr       */
+/*   Updated: 2023/02/28 16:16:50 by doriani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,12 @@ void	putstr(char *str)
 	}
 }
 
-void	ft_swap(int *a, int *b)
+int	factorial(int n)
+{
+	return n < 1 ? 1 : n * factorial(n - 1);
+}
+
+void	swap(int *a, int *b)
 {
 	int	temp;
 
@@ -30,7 +35,7 @@ void	ft_swap(int *a, int *b)
 	*b = temp;
 }
 
-void	ft_swap_matrix(int **mat, int n)
+void	swap_matrix(int dim, int **matrix)
 {
 	int	x;
 	int	y;
@@ -41,18 +46,18 @@ void	ft_swap_matrix(int **mat, int n)
 	y = 0;
 	i = 0;
 	j = 0;
-	while (i < n)
+	while (i < dim)
 	{
 		x = i;
 		y = j;
-		while (x < n)
-			ft_swap(&mat[i][x++], &mat[y++][j]);
+		while (x < dim)
+			swap(&matrix[i][x++], &matrix[y++][j]);
 		i++;
 		j++;
 	}
 }
 
-void	print_matrix(int **permutation, int dim)
+void	print_matrix(int **matrix, int dim)
 {
 	int		i;
 	int		j;
@@ -62,7 +67,7 @@ void	print_matrix(int **permutation, int dim)
 	i = 0;
 	while (i < dim)
 	{
-		row = permutation[i];
+		row = matrix[i];
 		j = 0;
 		while (j < dim)
 		{
